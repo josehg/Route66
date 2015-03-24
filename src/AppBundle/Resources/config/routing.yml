@@ -1,0 +1,12 @@
+app_hompage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+
+app_install:
+    path:     /install
+    defaults: { _controller: AppBundle:Installer:install }
+
+
+negocio_detalle:
+    path:     /biz/{id_negocio}
+    defaults: { _controller: AppBundle:Negocios:detalle }

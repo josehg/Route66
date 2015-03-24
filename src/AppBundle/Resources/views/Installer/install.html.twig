@@ -1,0 +1,11 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% if thereIsAnAdminRegistered is not defined%}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    {% elseif thereIsAnAdminRegistered is defined and thereIsAnAdminRegistered == true %}
+        Ya se ha relizado la instalación
+    {% endif %}
+
+{% endblock %}

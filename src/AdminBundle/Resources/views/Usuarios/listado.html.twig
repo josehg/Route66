@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Listado usuarios</h2>
+                <a class="btn btn-primary" href="{{ path('alta_usuario') }}">Alta usuario</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Activo</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.username }}</td>
+                            <td>{{ usuario.nombre }} {{ usuario.apellidos }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.enabled|enabled|raw }}</td>
+                            <td>
+                                {% if usuario.enabled == 1 %}
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('desactivar_usuario' , {'id_usuario':usuario.id }) }}">Desactivar</a>
+                                {% else %}
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('activar_usuario' , {'id_usuario':usuario.id }) }}">Activar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

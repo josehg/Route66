@@ -1,0 +1,19 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<h2>Editar perfil</h2>
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    {% form_theme form 'AppBundle:Form:bootstrap-override.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.email) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.nombre) }}
+    {{ form_row(form.apellidos) }}
+    {{ form_row(form.current_password) }}
+
+
+    <div>
+        <input class="btn btn-primary" type="submit" value="{{ 'profile.edit.submit'|trans }}" />
+    </div>
+    {{ form_end(form) }}
+</form>

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Listado negocios</h2>
+                {% if negocios is empty %}
+                    <p>No hay ningun negocio.</p>
+                {% endif %}
+                <a class="btn btn-primary" href="{{ path('alta_negocio') }}">Alta negocio</a>
+                {% if negocios is not empty %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Categoria</th>
+                        <th>Activo</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for negocio in negocios %}
+                        <tr>
+                            <td>{{ negocio.nombre }}</td>
+                            <td>
+                                {% for categoria in negocio.categorias %}
+                                {{ categoria.nombre }}{{ loop.last ? '' : ', ' }}
+                                {% endfor %}
+                            </td>
+                            <td>{{ negocio.enabled|enabled|raw }}</td>
+                            <td>
+                                <a class="btn btn btn-default btn-sm"
+                                   href="{{ path('editar_negocio' , {'id_negocio':negocio.id }) }}">Editar</a>
+                                {% if negocio.enabled == 1 %}
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('desactivar_negocio' , {'id_negocio':negocio.id }) }}">Desactivar</a>
+                                {% else %}
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('activar_negocio' , {'id_negocio':negocio.id }) }}">Activar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

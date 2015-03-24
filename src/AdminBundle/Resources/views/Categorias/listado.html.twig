@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <h2>{% trans %}Categorias{% endtrans %}</h2>
+        <div class="row">
+            <div class="col-md-10">
+        {% if categorias is empty %}
+
+            <p>Aun no se ha creado ninguna categoría</p>
+
+        {% else %}
+
+
+                <ul>
+                    {{ _self.menu_links(categorias) }}
+                </ul>
+
+
+        {% endif %}
+
+            </div>
+        </div>
+                <a class="btn btn-primary" href="{{ path('add_categoria') }}">{% trans %}Añadir{% endtrans %}</a>
+
+    </div>
+{% endblock %}
+
+{% macro menu_links(links) %}
+    {% for link in links %}
+        <li>{{ link.nombre }}
+            {% if link.children.count > 0 %}
+                <ul>
+                    {{ _self.menu_links(link.children) }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}

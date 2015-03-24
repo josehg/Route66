@@ -1,0 +1,53 @@
+admin_homepage:
+    path:     /
+    defaults: { _controller: AdminBundle:Default:index }
+
+listado_usuarios:
+    path:     /usuarios
+    defaults: { _controller: AdminBundle:Usuarios:listado }
+
+alta_usuario:
+    path:     /alta-usuario
+    defaults: { _controller: AdminBundle:Usuarios:alta }
+
+activar_usuario:
+    path:     /activar-usuario/{id_usuario}
+    defaults: { _controller: AdminBundle:Usuarios:activar }
+
+desactivar_usuario:
+    path:     /desactivar-usuario/{id_usuario}
+    defaults: { _controller: AdminBundle:Usuarios:desactivar  }
+
+listado_negocios:
+    path:     /negocios
+    defaults: { _controller: AdminBundle:Negocios:listado }
+
+alta_negocio:
+    path:     /alta-negocio
+    defaults: { _controller: AdminBundle:Negocios:alta }
+
+editar_negocio:
+    path:     /editar-negocio/{id_negocio}
+    defaults: { _controller: AdminBundle:Negocios:editar }
+
+activar_negocio:
+    path:     /activar-negocio/{id_negocio}
+    defaults: { _controller: AdminBundle:Negocios:activar }
+
+desactivar_negocio:
+    path:     /desactivar-negocio/{id_negocio}
+    defaults: { _controller: AdminBundle:Negocios:desactivar  }
+
+
+listado_categorias:
+    path:     /categorias
+    defaults: { _controller: AdminBundle:Categorias:listado  }
+
+add_categoria:
+    path:     /add-categoria
+    defaults: { _controller: AdminBundle:Categorias:add  }
+
+admin_ajax_upload_picture:
+    path:     /ajax/upload-picture
+    defaults: { _controller: AdminBundle:Ajax:uploadPicture  }
+    methods:  [POST]

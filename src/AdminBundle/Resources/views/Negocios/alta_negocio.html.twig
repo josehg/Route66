@@ -1,0 +1,149 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Alta negocio</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% form_theme form 'AppBundle:Form:bootstrap-override.html.twig' %}
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="col-md-6">
+                {{ form_row(form.nombre) }}
+                {{ form_row(form.direccion) }}
+                {{ form_row(form.municipio) }}
+                {{ form_row(form.estado) }}
+                {{ form_row(form.codigo_postal) }}
+                {{ form_row(form.telefono) }}
+                {{ form_row(form.telefono_movil ) }}
+                {{ form_row(form.descripcion) }}
+                {{ form_row(form.categorias) }}
+                {{ form_row(form.save) }}
+                <a class="btn btn-default" href="{{ path('listado_negocios') }}" >Cancelar</a>
+            </div>
+            <div class="col-md-6">
+                <style>
+                    #map-canvas {
+                        width: 100%;
+                        height: 400px;
+                        background-color: #CCC;
+                    }
+                </style>
+
+                <div id="localizacion">
+                    <p><strong>Localizacion</strong></p>
+                    <div class="form-group">
+                        <a id="localizar-direccion" class="btn btn-default btn-sm" href="#">Localizar direccion</a>
+                    </div>
+                    <div id="map-canvas"></div>
+                    {{ form_row(form.latitud) }}
+                    {{ form_row(form.longitud) }}
+                </div>
+                <script>
+                    var marker;
+                    var map;
+                    var geocoder;
+                    function initialize() {
+                        var myLatlng = new google.maps.LatLng({{ negocio.latitud }}, {{ negocio.longitud }});
+                        var mapCanvas = document.getElementById('map-canvas');
+                        var mapOptions = {
+                            center: myLatlng,
+                            zoom: 11,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        }
+                        geocoder = new google.maps.Geocoder();
+                        map = new google.maps.Map(mapCanvas, mapOptions);
+                        marker = new google.maps.Marker({
+                            animation: google.maps.Animation.DROP,
+                            draggable:true,
+                            position: myLatlng,
+                            map: map,
+                            title:"Localizacion negocio"
+                        });
+                        marker.setMap(map);
+                        google.maps.event.addListener(marker,'dragend',function(event) {
+                            document.getElementById('form_latitud').value = event.latLng.lat();
+                            document.getElementById('form_longitud').value = event.latLng.lng();
+                            codeLatLng(event.latLng);
+                        });
+                    }
+                    $( document ).ready(function() {
+                        google.maps.event.addDomListener(window, 'load', initialize);
+                    });
+
+
+                    $('#localizar-direccion').click(function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        codeAddress();
+                    });
+
+                </script>
+
+                <hr>
+                {{ form_row(form.fileupload) }}
+                <style>
+                    .bar {
+                        height: 18px;
+                        background: green;
+                    }
+                </style>
+                <div id="progress">
+                    <div class="bar" style="width: 0%;"></div>
+                </div>
+                <div class="row">
+                    {% for foto in negocio.fotos %}
+                        <div class="col-md-4">
+                            <a href="#" class="thumbnail">
+                                <img src="{{ asset(foto.webpath) }}" title="{{ foto.nombre }}" />
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="" id="imagepreview" style="width:100%">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(".thumbnail").on("click", function() {
+                        $('#imagepreview').attr('src', $(this).children().attr('src')); // here asign the image to the modal when the user click the enlarge link
+                        $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+                    });
+                </script>
+                <script>
+                    $(function () {
+                        $('#form_fileupload').fileupload({
+                            url: '{{ path('admin_ajax_upload_picture') }}',
+                            dataType: 'json',
+                            add: function (e, data) {
+                                data.context = $('<p/>').text('Uploading...').appendTo($('#progress'));
+                                data.submit();
+                            },
+                            done: function (e, data) {
+                                data.context.text('Upload finished.');
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="/js/funciones.js"></script>
+    <script src="/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/js/jquery.iframe-transport.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
+{% endblock %}

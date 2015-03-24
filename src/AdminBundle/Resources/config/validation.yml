@@ -1,0 +1,15 @@
+# AdminBundle/Resources/config/validation.yml
+AppBundle\Entity\Negocio:
+    properties:
+        nombre:
+            - NotBlank: ~
+        direccion:
+            - NotBlank: ~
+        municipio:
+            - NotBlank: ~
+        estado:
+            - NotBlank: ~
+        codigo_postal:
+            - NotBlank: ~
+        telefono:
+            - NotBlank: ~
